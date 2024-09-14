@@ -9,6 +9,14 @@
         button { padding: 5px 10px; }
         #queueList { margin-top: 20px; list-style: none; padding: 0; }
         .queue-item { margin: 5px 0; padding: 10px; background-color: #f1f1f1; border-radius: 5px; }
+        .remove-btn {
+            margin-left: 20px;
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -43,7 +51,8 @@
                     data.forEach((item, index) => {
                         const listItem = document.createElement('li');
                         listItem.className = 'queue-item';
-                        listItem.innerText = `${index + 1}. ${item.name}`;
+                        listItem.innerHTML = `${index + 1}. ${item.name}
+                            <button class="remove-btn" onclick="removeFromQueue('${item.name}')">Remove ${item.name}</button>`;
                         queueList.appendChild(listItem);
                     });
                 });
@@ -76,6 +85,23 @@
         // Function to clear the queue
         function clearQueue() {
             fetch('/clear-queue', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        getQueue();  // Refresh queue
+                    }
+                });
+        }
+
+        // Function to remove single entry in queue
+        function removeFromQueue(userName) {
+            fetch('/remove-from-queue', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({'name': userName })
+                })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
