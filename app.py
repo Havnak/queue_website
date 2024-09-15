@@ -30,15 +30,14 @@ def clear_queue():
 @app.route('/remove-from-queue', methods=['POST'])
 def remove_from_queue():
     data = request.json
-    name = data.get('name')  # Get the 'name' from the request body
+    name = data.get('name')
 
     if name:
-        # Create a query object to search for the entry with the given name
         User = Query()
-        db.remove(User.name == name)  # Remove the user with the matching name
+        db.remove(User.name == name)
         return jsonify({'success': True}), 200
     else:
         return jsonify({'success': False, 'error': 'Name is required'}), 400
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

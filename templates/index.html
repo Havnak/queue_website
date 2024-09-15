@@ -52,7 +52,7 @@
                         const listItem = document.createElement('li');
                         listItem.className = 'queue-item';
                         listItem.innerHTML = `${index + 1}. ${item.name}
-                            <button class="remove-btn" onclick="removeFromQueue('${item.name}')">Remove ${item.name}</button>`;
+                            <button class="remove-btn" onclick="removeFromQueue('${item.name}')">Remove</button>`;
                         queueList.appendChild(listItem);
                     });
                 });
