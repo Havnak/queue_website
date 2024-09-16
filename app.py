@@ -18,7 +18,7 @@ Copyright 2024 Haavard Nakling
 from tinydb import TinyDB, Query
 from flask import Flask, jsonify, render_template, request
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 db = TinyDB('db.json')
 
 @app.route('/')
