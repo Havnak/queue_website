@@ -26,7 +26,7 @@
     <!-- Input Section -->
     <div>
         <input type="text" id="userName" placeholder="Enter your name">
-        <button onclick="addToQueue()">Join Queue</button>
+        <button id="addButton" onclick="addToQueue()">Join Queue</button>
         <button onclick="clearQueue()">Clear Queue</button>
     </div>
 
@@ -52,7 +52,7 @@
                         const listItem = document.createElement('li');
                         listItem.className = 'queue-item';
                         listItem.innerHTML = `${index + 1}. ${item.name}
-                            <button class="remove-btn" onclick="removeFromQueue('${item.name}')">Remove ${item.name}</button>`;
+                            <button class="remove-btn" onclick="removeFromQueue('${item.name}')">Remove</button>`;
                         queueList.appendChild(listItem);
                     });
                 });
@@ -109,6 +109,12 @@
                     }
                 });
         }
+	
+	document.getElementById("userName").addEventListener("keydown", function (event){
+		if (event.keyCode == 13){
+			document.getElementById("addButton").click();
+			    }
+		    });
     </script>
 
 </body>
