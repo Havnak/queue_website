@@ -21,7 +21,6 @@ Copyright 2024 Haavard Nakling
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Queue System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </head>
 
 <body>
@@ -30,7 +29,7 @@ Copyright 2024 Haavard Nakling
     <!-- Input Section -->
     <div>
         <input type="text" id="userName" placeholder="Enter your name">
-        <button onclick="addToQueue()">join queue</button>
+        <button id='addButton' onclick="addToQueue()">join queue</button>
         <button onclick="clearQueue()">clear queue</button>
         <button id="login-button">login</button>
         <button id="new-user">new user</button>
@@ -38,5 +37,7 @@ Copyright 2024 Haavard Nakling
     
     <!-- Queue List -->
     <ul id="queueList"></ul>
+    
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>

@@ -73,3 +73,9 @@ function removeFromQueue(userName) {
             }
         });
 }
+
+document.getElementById('userName').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter'){
+        document.getElementById("addButton").click();
+    }
+});

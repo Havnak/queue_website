@@ -17,6 +17,10 @@ Copyright 2024 Haavard Nakling
 
 from tinydb import TinyDB, Query
 from flask import Flask, jsonify, render_template, request
+from bcrypt import hashpw, checkpw, gensalt
+from uuid import uuid4
+from time import sleep
+from random import randrange
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 db = TinyDB('db.json')
@@ -55,6 +59,37 @@ def remove_from_queue():
         return jsonify({'success': True}), 200
     else:
         return jsonify({'success': False, 'error': 'Name is required'}), 400
-    
+
+@app.route('/add-new-user', methods=['POST'])
+def add_new_user():
+    data = request.json
+    username = data.get('username')
+    pw = data.get('password')
+    User = Query()
+    user_id = uuid4()
+    while db.search(User.user_id.exists()): user_id = uuid4() # Very low probability of happening
+
+    if db.search(User.username == username):
+        return jsonify({'success': False, 'error': 'Name is already taken'}), 400
+    else:
+        hashed_pw = hashpw(pw.encode('utf-8'), gensalt(rounds=12))
+        db.insert({'username':username, 'hashed_pw':hashed_pw.decode('utf-8'), 'user_id':user_id})
+        return jsonify({'success': True}), 200
+
+@app.route('/log-in', methods=['GET'])
+def log_in():
+    data = request.json
+    username = data.get('username')
+    pw = data.get('password')
+    User = Query()
+    if not db.search(User.username == username): 
+        sleep(0.245+randrange(0,0.01,100)) # To mimic bcrypt time
+        return jsonify({'success': False, 'error': 'Username or password is wrong'}), 400
+
+    if not checkpw(password=pw.encode('utf-8'), hashed_password=(db.get(User.username==username)['hashed_pw']).encode('utf-8')): return jsonify({'success': False, 'error': 'Username or password is wrong'}), 400
+    else:
+        return jsonify({'success': True, 'user_id': (User.username == username)['user_id']}), 200
+        
+
 if __name__ == '__main__':
     app.run()
