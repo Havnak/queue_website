@@ -41,4 +41,4 @@ def remove_from_queue():
         return jsonify({'success': False, 'error': 'Name is required'}), 400
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run('0.0.0.0')
